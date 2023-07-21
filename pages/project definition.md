@@ -1,0 +1,78 @@
+- fungibility  & privacy "development toolkit"
+- essential core components/functionality/milestones for a mainnet release
+	- for MVP or alpha release
+		- if byzantine fault tolerance is a minimum requirement, then all are part of MVP
+		- empirically, very good reasons to believe abuse will take time to grow sophisticated
+		- open problems are mainly how to improve existing solutions
+			- e.g. wabisabi can be thought of as the proof of concept for the denial of service protection
+		- ... so arguably the honest-but-curious a.k.a. semi-honest threat is arguably enough even for a mainnet release?
+	- privacy analysis
+		- objective metrics calculated from transaction graph
+			- intra-transaction
+				- equivalence classes
+				- sub-transaction model
+					- approximate lower bounds
+					- naive version for validation purposes already implemented in the paper
+			- inter-transaction
+				- interconnection networks, inheritance model
+				- history intersection, alice-eve-alice threat model
+			- cost metrics
+		- additional subjective metrics & models
+			- clustering
+			- labelling
+	- cost function driven wallet state transition loop
+		- most basic functionality: schedule a payment
+	- privacy conscious cost function
+		- use privacy analsyis to define privacy liability terms in the cost function
+	- multiparty transaction construction
+		- coalition formation
+			- advertisements
+				- transaction constraints
+					- feerates
+					- script type restrictions
+					- etc
+				- ownership proof
+					- online key(s) delegation
+					- address
+				- effectively an order book, could be realized using:
+					- lightning liquidity ads
+					- joinmarket order book
+			- offers
+				- invitation to participate in a multiparty transaction
+			- transport
+				- advertisements
+					- analogous to lightning gossip
+					- nostr based
+					- ... ?
+				- offers
+					- gossip? tricky DoS
+					- nostr
+					- interactive protocol
+						- BOLT 2 & 8 based
+						- (ephemeral) tor hidden service now, LN onion in the future?
+							- privacy tradeoff depends on very pessimistic adversary threat model, arguably nym is even more appropriate than ln onion in principle, but tor's much larger userbase provides better privacy for less severe threat models...
+		- transaction construction
+			- PSBTv2 lattice types
+				- these the different ways of combining PSBTv2 messages or their constituent fields
+					- some join/merge operations are implied, some explicit in the specs
+					- additional auxilliary things, e.g. nLocktime interval lattice is just an annoying sum type of intervals which otherwise form a lattice under intersection
+					- we also care when these operations are total, i.e. is it a join semi lattice or not, and can we restrict the domain in order to make a join semi lattice out, or equivalently define restricted (sub)protocols for transaction construction which guarantee eventual consistency
+				- additional constraints (e.g. feerates, restrictions)
+				- protocol for message PSBTv2 state replication
+					- (given different input/output addition messages, everyone needs to agree on things like the ordering, etc to obtain the same unsigned tx before the signing phase)
+					- regardless of transport there is potential for reducing size of auxilliary data through p2p exchange, since all clients need the same data
+						- fountain codes can help with robustness and efficiency, has been previously studied in the context of blockchain archival
+						- set reconciliation (minisketch)
+					- interactive transport: lightning based (BOLT 2 & 8)
+						- epehemeral tor hidden services & node IDs
+						- leader election seems like simplest off the shelf approach
+							- potential for improvement in message complexity & fault tolerance with accountable lattice agreement protocols, design space is very big and it looks like different approaches make sense for different threat models and different settings, e.g. RBF cut through requires many more sessions but the individual sessions perform work in smaller increments
+					-
+	- robustness in byzantine setting
+		- advertisements
+			- BIP 322
+		- offers
+			- range proofs
+			- balance proof
+			- n linkable ring signatures or 1 musig indicating unanimous approval
+		- anonymous credentials
