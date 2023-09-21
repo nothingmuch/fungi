@@ -1,3 +1,5 @@
+- TODO refactor, organize - this page is conceptually an architectural dependency graph
+	- see [[protocol]], [[cost function]] and [[problem statement]] for additional context
 - fungibility  & privacy "development toolkit"
 - essential core components/functionality/milestones for a mainnet release
 	- for MVP or alpha release
@@ -16,7 +18,7 @@
 			- inter-transaction
 				- interconnection networks, inheritance model
 				- history intersection, alice-eve-alice threat model
-			- cost metrics
+			- cost metrics (fees, waste)
 		- additional subjective metrics & models
 			- clustering
 			- labelling

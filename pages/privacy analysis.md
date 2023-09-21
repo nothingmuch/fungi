@@ -1,0 +1,2 @@
+- the limiting case for privacy is anonymity, defined in terms of an [[anonymity set]]
+-

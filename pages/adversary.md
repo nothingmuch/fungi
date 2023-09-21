@@ -1,0 +1,8 @@
+- a modeling assumption used to study the privacy properties of a system
+- informally, a representation of what some malicious entity might be able to do in principle
+- capabilities vary
+	- qualitative distinctions
+		- active/passive (covert)
+		- local/global
+		- internal/external
+	- computational vs. information theoretical hiding

@@ -1,0 +1,68 @@
+- TODO this page needs refactoring
+- naive bitcoin transactions lack privacy
+	- common input ownership heuristic and change identification
+		- vaguely described by Satoshi
+		- explicated by Ron & Shamir, studied observationally
+			- metadata correlated from public websites
+		- fistful of bitcoins paper, first empirical study
+			- sent btc down a mixer, analyzed results
+		- Jonas Nick's thesis
+			- BIP 37 privacy leak
+				- exponential decay of noise, thought to be anonymizing, through long term collection
+			- empirical confirmation of clustering heuristics
+	- proliferation of quasi identifiers
+- privacy losses occur, with few exceptions, at a rate that is expoenential in the amount of leaked data
+	- the privacy literature is riddled with examples of deanonymizations
+	- a common failure mode is analyzing components in isolation
+	- another common failure mode is assuming worst case behavior from the adversary's perspective, instead of the user's
+	- in bitcoin many hazards:
+		- unencrypted p2p network, known to have byzantine and honest-but-curious nodes
+			- bip 324
+		- transactions leak a lot of metadata
+			- many known structural fingerprints
+			- amounts are inherently leaky
+				- correlatable to real world fiat prices
+			- transaction graph especially troublesome
+				- combinatorial explosion of potential quasi-identifiers to consider for every coin
+	- examples
+		- non-bitcoin
+			- us census [[k-anonymity]]
+			- netflix graph, Naranyan & Shmatikov
+			- browser fingerprinting
+			- monerolink
+			- zcash shielded pool p2p leak
+		- bitcoin
+			- satoshi's understatements, optimistic perception
+			- bip 37
+			- dusting
+				- rebroadcast
+				- spend
+			- {{embed ((c3a52ca2-48ef-4c9b-81bc-f91996986053))}}
+			- sharedcoin
+			- wasabi
+				- tor circuits
+				- coin selection
+			- samourai
+				- bip 47
+					- dusting
+				- paynyms, xpubs, dojo
+				- address reuse
+			- [[toxic change problem]]
+- strong fungibility is emergent from privacy
+	- can also be a legal or social construct
+	- but if non-fungibility cannot be enforced then fungibility is self evident
+- privacy and fungibility are a requirement for censorship resistance
+	- non-fungibility in and of itself is a kind of censorship
+		- discriminatory costs may exclude some participants
+	- lack of privacy exposes users to harms
+		- safety
+		- fraud
+		- surveillance
+		- loss of business confidentiality
+	- chilling effects create an unobservable baseline level of self censorships
+- difficulties with consensus level privacy enhancements:
+	- *asymptotically* worse scaling behavior
+	- for confidential transaction like homomorphic values non post quantum homomorphic commitment scheme is not future proof:
+		- quantum adversary can either break privacy or inflate, depending on whether commitment scheme is computationally hiding or binding
+	- additionallly, monero & zcash both had cryptographic soundness related inflation bugs
+	- bitcoin consensus is hard enough to change with soft forks, adoption is slow

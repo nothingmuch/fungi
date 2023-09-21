@@ -1,0 +1,9 @@
+- an attribute of a user which is unique to that user
+- examples
+	- a (secure) public key
+	- passport number
+	- a primary key in a database
+	- email address (usually)
+- non examples
+	- full name
+	- [[quasi-identifier]]

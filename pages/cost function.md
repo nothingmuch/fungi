@@ -1,0 +1,21 @@
+- privacy terms
+	- threat models
+		- blockchain observer
+			- local public adversary
+		- counterparty
+			- local active adversary
+		- metadata observer
+			- global passive/covert adversary
+		- metadata observer + counterparty
+			- eve-alice-eve / streaming wallet model
+			- anonymity set is quantified by counting counterfactual paths through transaction graph
+	- cost normalization
+		- threat model output includes transaction subgraph
+			- sybil attack cost estimation can be given in terms of
+				- fee cost
+				- liquidity requirements integrated over time
+		- the user's willingness to pay fee overheads (in terms of intuitive budget controls) and the threat model give a lower bound to the perceived harm of attacks on the user's privacy
+		- wallet states that are not sufficiently private according to the threat model impose a liability on their constituent coins, that can be discharged by spending into privacy enhanced transactions
+- additional terms
+	- (scheduled) payment intents can be represented as a time dependent, which exceeds the payment amount past the deadline
+	- usual coin selection considerations apply

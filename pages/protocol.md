@@ -1,0 +1,75 @@
+- overview
+	- multiparty transaction construction
+	- with privacy preserving denial of service protection, ensuring honest parties can successfully output a signed/broadcastable transaction
+		- given $n = t + f$ participants where $t$ is the number of honest [[user]]s, the protocol succeeds in $O(f^k)$ communication rounds or $O(f)$ retry sessions (excluding non-signing coins) in the worst case
+- design rationale
+	- privacy requires multiparty transactions
+		- 2 parties can provide both parties privacy from 3rd parties, but not from each other
+		- 3 or more honest participants can attain privacy from the world and from each other
+		- furthermore, parties need to avoid leaking [[quasi-identifier]]s, both within the data of the [[message]]s but also with regards to metadata, such as IP addresses
+			- this implies a [[privacy overlay network]] is in use
+	- multiparty transactions are inherently brittle
+		- intermediate protocol state can be (partly) described by PSBTv2
+		- assuming theft/custody risk is unacceptable implies byzantine agreement is necessary
+			- all inputs must authorize the transactions with a signature, so parties need to reach consensus on what transaction to sign
+			- given $n$ fragments that could be aggregated together, in general there are $2^n$ ways of combining them into a single PSBT, and this assuming no degrees of freedom with regards to the final ordering
+				- therefore, messages in the protocol must be authenticated, and this authentication must not compromise privacy
+			- in the synchronous communication model, any party can veto a outcome of a fully signed transaction by defecting
+			- in the partial synchrony communication model, disruption or defection is indistinguishable from an honest participant experiencing a network partition
+	- incentive compatibility implies possibility of successful outcome
+		- once comitted to a session, all honest parties must at least weakly prefer to sign, regardless of the other participants' actions
+		- all participants must be assured that all of their operations are accepted
+	- denial service mitigation through authenticated messages
+		- only accepting messages (additions of inputs or outputs to transaction under construction) that are provably honest enforces that there is no legitimate reason to refuse to sign
+			- note here that honesty is in the sense of no misappropriated funds, i.e. the users' intended use of their funds  of funds, (with regards to fund allocation, in the stronger incentive alignment sense, universe patches welcome ;-) enforces that no one has a legitimate reason to refuse a signature
+		- if the above all holds, then participants have no valid reason not to sign
+		- therefore, failure to sign implies disruption (whether due to malice or connectivity issues)
+		- message validity
+			- [[anonymous credentials]] issued [[homomorphic value commitments]] in exchange for adding an input
+			- these can then be "spent" (no monetary value) in order to add outputs
+			- join/split operations are possible, batch operations have a balance proof & range proofs
+			- analogous to confidential transactions, but instead of a tx graph and consensus state, the issuer/validator provides an unforgeable authenticator (analogous to blind signature or MAC) with the homomorphic commitment as a message
+- phases
+  collapsed:: true
+	- advertisement aggregation
+		- RBF
+	- transaction construction session
+		- proposal aggregation
+		- spend commitment
+		- input set finalization
+		- output set finalization
+		- signature aggregation
+- elements
+	- spendable coins or coin-like objects
+		- utxos
+			- confirmed
+			- uncomfirmed
+		- spent outputs with replaceable txs
+			- bip 125
+			- full rbf
+		- virtual utxos, off chain outputs
+	- [[ownership proofs]]
+	- [[listen advertisements]]
+	- [[co-spend proposals]]
+	- [[final offer]]
+	- [[anonymous credentials]]
+	- output allocation
+		- silent payments tweak derivation (mandatory?)
+			- the rationale for including this at the cost of $n^2$ communication and an additional round trip, is not just to support silent payments from multiparty transactions, although that compatibility is nice especially as it makes all outputs plausibly silent payment outputs
+			- the real reason is that this provides a stateless mechanism for categorically eliminating address reuse (assuming input sets are never repeated)
+				- this is a concern because addresses revealed in failed sessions (no fully signed tx or transaction was not confirmed) could be repeated if recovering from seed, which from a privacy point of view is no different than address reuse
+				- the downside is that recovering from seed light clients must their full transaction history in dependency order before they can discover their spendable balance, but note that since these dependency chains are rooted in non silent payment outputs, a full blockchain scan is not reqquired
+		- TODO confidential asset tag for nested sessions among sub-coalitions
+	- output finalization
+		- TODO work out details of final reveal
+			- no good solution for duplicate output edge case
+				- merkle sum tree aggregation? problematic semantics...
+				- uniqueness through guaranteed position before reveal? ugly and constraining...
+				- multiple credential presentations pooling into an output can simplify certain interactions but is a fingerprint, so should not be supported
+					- naive solution: credentials have no monetary value so they can be pooled by simply sharing between sub-coalition members
+					- for AMAC based KVAC credentials, all sigma protocols are a generalization of Schnorr identification, need to work through musig security proofs and see if they are transferrable to more general homomorphism
+						- this is interesting in its own right as that would imply the possibility of FROST based threshold issuance without pairing crypto
+						- keyed verification is mainly a communication overhead problem even if transcripts need to be publicly verifiable, since although verification itself requires the secret, the issuers can jointly produce a publicly verifiable proof of valid redemption using the issuer keys
+	- witness aggregation
+		- best mitigation for witness inflation: RBF cut through, bump in small increments?
+			- fullrbf dramatically simplifies this but bounds for BIP-125 compliant bumps can be computed at the beginning of the transaction construction session

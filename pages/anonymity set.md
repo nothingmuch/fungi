@@ -1,0 +1,7 @@
+- from the [[adversary]]'s perspective, given a [[message]] (c.f. Diaz et al) sent in a system, this is the set of users that might have sent (or received) it
+- in bitcoin we can consider at least two kinds of anonymity sets:
+	- coins and their predecessor coins
+	- owners of coins ~~ wallet clusters
+- we want to consider two kinds of metrics for anonymity sets
+	- [[k-anonymity]] is a model that applies when the [[adversary]]'s probability of guessing correctly from the set is no better than uniform.
+	- [[entropic anonymity]] is a more general model when the probability distribution is non-uniform

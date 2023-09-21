@@ -1,0 +1,26 @@
+- these are overlay networks designed to provide anonymity or privacy on the transport layer
+	- use correctly this can suppress [[quasi-identifier]] leaks arising from network metadata
+- tor
+	- connection oriented, low latency onion routing over "circuits"
+	- to avoid linking messages circuit isolation must be used
+		- circuit management is a challenge both for robustness and for privacy
+			- circuit establishment involves highly variable delays and non negligible failure probability
+			- this can result strong temporal fingerprints, especially because the tor daemon builds new circuits sequentially
+	- not designed to resist global passive adversary performing timing correlations
+		- confidentiality and size uniformity can still afford users with an [[anonymity set]] against such an adversary within a single transaction
+			- this is not post quantum safe so such sessions might still be deanonymized after the fact
+- i2p
+	- datagram support
+- LN onion messaging?
+- katzenpost?
+- gnunet?
+- veilid?
+	- new, seems promising
+- nym?
+	- very rigorous privacy model, based on loopix & sphinx
+		- TODO references
+	- complicated architecture
+	- has a coin
+- cwtch?
+- briar?
+- ...

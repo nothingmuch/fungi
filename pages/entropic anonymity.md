@@ -1,0 +1,5 @@
+- the paper [[Towards Measuring Anonymity]] defines this metric for anonymity sets
+- this is a generalization of (implied) [[k-anonymity]]
+	- when a specific sender or receiver is more likely, this is modeled as a non-uniform probability density function
+	- the unit is bits of entropy
+	- when the the probability is uniform, this is exactly $log_2(k)$

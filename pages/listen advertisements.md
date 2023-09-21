@@ -1,0 +1,4 @@
+- these are long lived solicitations of for [[co-spend proposals]]
+	- gossip, store & forward?
+- authorized by signature with online key key comitted to by [[ownership proofs]]
+- contain e.g. tor hidden service address, for submit proposals to the owner of the coin

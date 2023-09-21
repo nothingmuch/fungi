@@ -1,0 +1,3 @@
+- Before an input can be added, the entity adding it must prove the abillity to sign for that coin
+- BIP 322
+- delegate to online key & commit to session parameters

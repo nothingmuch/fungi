@@ -1,0 +1,9 @@
+- final set aggregated proposals
+- finalized (initial) input set
+	- subsequent inputs can be added, but require payment of weight unit allocation
+- concrete transaction parameters
+- overt payoffs? CCA? proposer determined?
+- are proposals small-ish? sqrt() of total?
+- optimize for recovery or for welfare maximization?
+	- dynamic?
+-

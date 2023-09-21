@@ -1,0 +1,4 @@
+- this is the assumption that the user has access to trusted hardware and controls the software
+- in bitcoin, this assumption is often weakened
+	- e.g. multisig, hardware wallets, cold storage would be baseless and strictly increase risk if we could assume users always had a TCB
+- lack of a TCB presents a principal-agent problem

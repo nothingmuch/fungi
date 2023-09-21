@@ -1,0 +1,3 @@
+- Given a set of unit domain separators $C$, we obtain a set of NUMS generators $\{G_i\}$ by hashing the domain separators to the curve.
+- A Pedersen multi commitment $Q = r G + \sum_{i \in C} a _{i} G_{i}$ where the blinding factor $r \in \mathbb{Z}_p$ is sampled randomly
+-

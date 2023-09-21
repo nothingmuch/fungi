@@ -1,0 +1,18 @@
+- [Protecting Privacy when Disclosing Information: k-Anonymity and Its Enforcement through Generalization and Suppression](https://dataprivacylab.org/dataprivacy/projects/kanonymity/paper3.pdf) by Pierangela Samarati and Latanya Sweeney
+- describes a procedure for suppressing/generalizing [[quasi-identifier]]s in a tabular data release so that even when they are combined there are never fewer than $k$ rows for any particular combination
+- also describes the alarming previous results of deanonymizing a significant fraction of the US census database using such combinations matched against voter registries
+- in Bitcoin
+	- we can think of a series of "releases" that append to the previous ones
+	- unique cryptographic identifiers, used correctly, are not reused and are indistinguishable from random
+	- p2p metadata, such as IP addresses
+	- temporal fingerprints
+	- known transaction fingerprints are quasi identifiers
+	- the transaction graph creates a combinatorial explosion of additional ones through successor/predecessor relation ("taint")
+		- simplest case, common input ownership heuristic: a wallet cluster is a quasi identifier
+			- this is not a technicality arising from there being multiple coins, so therefore it is not unique, but rather because of well known counterexamples, such as the MtGoxAndOthers on walletexplorer[dot]com
+	- we also care about blockchain external (meta)data, such as personally identifying information given for compliance reasons
+	- simplest example of k-anonymous outputs:
+		- outputs of a coinjoin with identical amounts and script types
+			- which are subsequently all spent separately in their entirety in 1 input transactions, see [[toxic change problem]]
+		-
+- [[entropic anonymity]] refines this to account for situations

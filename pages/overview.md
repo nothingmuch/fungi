@@ -1,0 +1,20 @@
+- for a bitcoin wallet to protect a [[user]]'s privacy
+	- it must
+		- account for privacy, or rather its absence
+			- within individual transactions
+			- accounting for the transaction graph context
+			- accounting for metadata leaks and [[quasi-identifier]]s
+				- blockchain data acquisition
+				- network fingerprints
+				- temporal fingerprints
+			- see [[problem statement]]
+		- facilitate multiparty transactions
+			- other ((semi-)honest, privacy seeking) users are a necessary condition for privacy
+	- this can be achieved by
+		- [[privacy analysis]]
+		- a resillient [[protocol]] for privacy preserving transaction construction
+		- a [[cost function]] for making determinations about wallet state transition
+			- simplest state transitions: transactions in an onchain wallet
+			- however, there are also intermediate states to be considered such as starting various multiparty interactions, e.g. lightning or coinjoin
+- see [[project definition]]
+-

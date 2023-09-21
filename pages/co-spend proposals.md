@@ -1,0 +1,55 @@
+- co spending proposals incentivize (v)UTXO owners to participate in multiparty transactions
+	- they are designed as a privacy preserving, denial of service resistant arbitrary payoff redistribution mechanism, to facilitate the formation of coalitions of input owners
+	- proposals name a set of spendable coins, and are made by one (or more) of the coins' owners to the other owners, consisting of a satoshi amount (positive or negative) given
+- components
+	- a cleartext fee contribution $v_{pub} \in [0, 2^{l-1}]$
+	- transaction parameters
+		- domain separator
+		- latest bitcoin block
+			- proves recency
+			- provides origin point for relative locktimes, timeouts, etc
+		- in general values are sets of acceptable intervals of integers combined by intersection
+		- parameters:
+			- feerate interval
+			- allowed script types
+			- nLocktime
+			- nSequence
+				- replaceability
+				- relative locktime (accounts for confirmations)
+			- input confirmations
+			- coindays
+			- number of intputs
+			- number of outputs
+			- input values
+			- output values
+			- initial input weight unit allocation (implicit?)
+			- additional inputs allowed (after initial inputs)
+			- timeout curves
+				- proposal
+				- tx construction session
+- inputs
+	- list of outpoints $(I_i)_{i=1}^n$ with nominal values $V_i$.
+	- let $V_{min}$ denote the smallest nominal value
+- pedersen commitments to tweaks $T_i = v_i G_{\mathrm{sats}} + r_i G$
+	- underlying secret values, proposer reveals  the owner of each input:
+		- a blinding factor $r_i \in \mathbb{Z}_p$, sampled randomly
+		- the payoff amount in sats $v_i \in [-2^{l-1}, 2^{l-1})$, where $l$ is the range proof width in bits
+- balance proof
+	- pedersen commitments randomize with standard $G$
+		- sign the proposal with public key $T = v_{pub} G_{\mathrm{sats}} + \sum_{i=1}^n T_i$
+		- this proves that the tweaks and the cleartext fee contribution sum to 0, i.e. the total payoff amount in the proposal is covered by at least one of the inputs
+- range proofs
+	- when aggregating offers, the aggregate tweak for an input must not underflow its effective value
+	- for each proposal we assume the maximal feerate and BIP-322 weight obligation to compute a worst case effective value for the input
+	- in order to bound aggregation to at most $O(log(V_i))$ proposals per input, range proof widths are computed as $l = \lfloor log_2\left(f(V_{min}\right) \rfloor - 1$ where $f$ bounds the payoff per proposal, and the $-1$ correction accounts for the public fee contribution.
+	- $f(x) = ?$
+		- $\approx \sqrt{x}$
+		- $\approx \frac{x}{log(x)}$
+		- determines range proof validation costs
+	- there should be additional $O(1)$ or $O(log(V_{min}))$ bound on the number of proposals
+- up to n linkable ring signatures where the ring is formed by the delegate keys
+	- top of this lattice (n unequivocated signatures) indicates unanimous acceptance
+	- equivalently, upon hitting the top of this lattice, or before, a musig aggregate signature is equivalent but significantly more compact and cheaper to validate
+	- Liam Eagan's work on curvetrees seems to be the current state of the art on abelian groups of prime order (i.e. secp256k1)
+		- there no strong security reason to prefer over pairing based crypto which would be more efficient here, e.g. set membership proofs or polynomial commitments can do a fair bit, and in general schemes which are unconditionally hiding and computationally binding are preferred as soundness breaks only jeopardize denial of service resistance
+-

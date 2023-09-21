@@ -1,0 +1,21 @@
+- Foundational paper by Claudia Diaz, Stefaan Seys, Joris Claessens, and Bart Preneel
+- https://sci-hub.se/https://link.springer.com/chapter/10.1007/3-540-36467-6_5
+- contemporaneous with the very similar [Towards an Information Theoretic Metric for Anonymity](https://bib.mixnetworks.org/pdf/serjantov2002towards.pdf) by Andrei Serjantov and George Danezis
+- main contributions
+	- system model
+		- very general: any system where different [[user]]s exchange [[message]]s over a network (graph)
+	- qualitative adversary capability model
+		- $\{ \mathrm{local}, \mathrm{global} \} \times \{ \mathrm{passive}, \mathrm{active} \} \times \{ \mathrm{external}, \mathrm{internal} \}$
+		- global means able to corrupt any node in the system
+		- active means the adversary and can alter or disrupt messages
+			- c.f. byzantine vs. semi-honest/honest-but-curious
+			- c.f. covert adversary
+		- global active internal adversary is essentially omnipotent rules out existence of a [[trusted computing base]] even in a weakened form
+		- examples:
+			- dragnet surveillance is global passive external
+			- many fake nodes on p2p network
+				- global, passive, external
+				- dust attacks & rebroadcasting
+			- a (potentially malicious) counterparty is generally local, active, external
+			- malware is internal
+	- [[entropic anonymity]] to quantitatify degree of anonymity provided by different systems against different kinds of of adversaries
