@@ -8,7 +8,7 @@
 		- wallet transactions
 			- confirmed
 			- unconfirmed
-	- secure storage of auxiliarry information
+	- secure storage of auxiliarry information, to feed into [[privacy analysis]]
 		- txs & tx fragments
 			- shared receive addresses
 			- proposed but abandoned txs

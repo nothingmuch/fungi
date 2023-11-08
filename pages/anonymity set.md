@@ -1,7 +1,15 @@
 - from the [[adversary]]'s perspective, given a [[message]] (c.f. Diaz et al) sent in a system, this is the set of users that might have sent (or received) it
-- in bitcoin we can consider at least two kinds of anonymity sets:
-	- coins and their predecessor coins
-	- owners of coins ~~ wallet clusters
-- we want to consider two kinds of metrics for anonymity sets
+- in bitcoin we can consider at least two types of anonymity sets
+	- ones consisting of predecessor coins for a given coin
+		- this type can be formally defined in terms of on chain data
+	- ones consisting of wallet clusters (clusters of coins), which are a proxy for an entity
+		- this type is impossible to make concrete without private information, but it is much more intuitive theoretically and can be examined in simulations
+- in order to quantify anonymity we want to consider two kinds of metrics for anonymity sets
 	- [[k-anonymity]] is a model that applies when the [[adversary]]'s probability of guessing correctly from the set is no better than uniform.
 	- [[entropic anonymity]] is a more general model when the probability distribution is non-uniform
+- the objects which will be proxies for entities in our anonymity sets are
+	- [[equivalent txout/txin anonymity set]]
+	- [[intra-transaction anonymity set]]
+	- [[inter-transaction anonymity set]]
+	- [[path like anonymity set]]
+- [[anonymity set for off chain transactions]]

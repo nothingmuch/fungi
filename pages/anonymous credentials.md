@@ -12,4 +12,4 @@
 	- privacy pass credentials
 	- RSA blind signatures
 - they are issued in response to issuance requests with a valid attribute is valid according to the protocol rules
-- numerical quantities  are represented
+- numerical quantities are represented

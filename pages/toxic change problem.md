@@ -1,5 +1,6 @@
+- note, there are 3 conflicting definitions of the "toxic change" problem
 - For illustrative purposes, assume 0 fees are possible
-- This is a problem inherent in fixed denomination coinjoins even under this favorable assumption
+- This is a problem inherent in [[equal amount CoinJoin]]s even under this favorable assumption
 - Scenario:
 	- Alice has 2 coins, $A_1$ and $A_2$, worth $x$, the smallest denomination in use in a coinjoin implementation.
 	- She coinjoins with using each separately, obtaining $A'_1$ and $A'_2$, each of which has $k$ identical siiblings

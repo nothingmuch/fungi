@@ -1,0 +1,13 @@
+- a class of transaction structures described by Greg Maxwell's original post, basis for the concrete structures of:
+    - JoinMarket
+    - Wasabi 1.x
+    - Samourai
+- these are multiparty transactions which attempt to subvert the [[common input ownership heuristic]]
+- if multiple users contribute inputs to a transaction, and create outputs which are identical up to the controlling key, avoiding reuse, these outputs will benefit from [[k-anonymity]] since each one could belong to any of the users
+- although Bitcoin transactions are limited in size (block size consensus limit, and standadness limit), in theory this does not limit the size of the [[anonymity set]] that can be obtained
+	- a single transaction with 4 inputs and 4 outputs is equivalent to 4 transactions with 2 inputs and outputs each, so long as as these follow the structure of an interconnection network
+- practical challenges
+	- fees must be paid which implies the input amount and output amount must differ
+		- this limits the interconnection network transactions graph topology
+		- or it necessarily requires multiple inputs per user
+	- multiple inputs are also needed due to the fixed denomination, [[toxic change problem]]

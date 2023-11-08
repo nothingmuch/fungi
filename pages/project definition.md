@@ -1,6 +1,6 @@
 - TODO refactor, organize - this page is conceptually an architectural dependency graph
 	- see [[protocol]], [[cost function]] and [[problem statement]] for additional context
-- fungibility  & privacy "development toolkit"
+- fungibility & privacy "development toolkit"
 - essential core components/functionality/milestones for a mainnet release
 	- for MVP or alpha release
 		- if byzantine fault tolerance is a minimum requirement, then all are part of MVP

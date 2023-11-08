@@ -1,0 +1,12 @@
+- see also LaurentMT's Boltzmann, which is almost equivalent
+	- though Boltzmann is the prior art, the sub-transaction model is slightly more refined
+- introduced in the paper [Anonymous CoinJoin Transactions with Arbitrary Values](https://www.comsys.rwth-aachen.de/fileadmin/papers/2017/2017-maurer-trustcom-coinjoin.pdf), by Maurer et al
+- assumptions: entities transact unilaterally (no net payments, or more generally no payments above fee threshold) within combined transactions and can therefore be partitioned
+- generalizes common input ownership heuristic to multiparty transactions
+- defines a probablistic linkage between inputs and outputs based on the number of *sub-transactions* they co-incide in
+	- a sub-transaction is a subset of the inputs and outputs such that the sum of the input values is equal to the sum of the outputs
+	- in reality, fees must also be accounted for so we are more interested in sums which are close to zero, possibly negative for example in the case of JoinMarket maker fees
+- naively computing this is hard: every possible partition of the inputs and outputs of a transaction (which grow exponentially in the size of the transaction, see [Bell number](https://en.wikipedia.org/wiki/Bell_number)) is potentially a valid sub-transaction, but many special cases are easy (c.f. subset sum problem) and can be practically solved with e.g. off the shelf linear programming solvers supporting mixed integer programming for the same reason that the knapsack cryptosystem is long considered broken
+- therefore, the only robust application of the sub-transaction model in defense is to ensure that there exist *many* valid solutions for each coin
+	- simple lower bounds can be computed efficiently and arranged by construction, for example in the classic [[equal amount CoinJoin]], any k equivalent outputs can be permuted without altering the structure of the partition, which necessarily preserves the sub-transaction invariant, this special case corresponds to [[k-anonymity]]
+    - see [[intra-transaction anonymity set]]

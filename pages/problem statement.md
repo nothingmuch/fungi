@@ -1,31 +1,84 @@
-- TODO this page needs refactoring
-- naive bitcoin transactions lack privacy
-	- common input ownership heuristic and change identification
-		- vaguely described by Satoshi
-		- explicated by Ron & Shamir, studied observationally
-			- metadata correlated from public websites
-		- fistful of bitcoins paper, first empirical study
-			- sent btc down a mixer, analyzed results
-		- Jonas Nick's thesis
-			- BIP 37 privacy leak
-				- exponential decay of noise, thought to be anonymizing, through long term collection
-			- empirical confirmation of clustering heuristics
-	- proliferation of quasi identifiers
-- privacy losses occur, with few exceptions, at a rate that is expoenential in the amount of leaked data
-	- the privacy literature is riddled with examples of deanonymizations
-	- a common failure mode is analyzing components in isolation
-	- another common failure mode is assuming worst case behavior from the adversary's perspective, instead of the user's
-	- in bitcoin many hazards:
-		- unencrypted p2p network, known to have byzantine and honest-but-curious nodes
-			- bip 324
-		- transactions leak a lot of metadata
-			- many known structural fingerprints
-			- amounts are inherently leaky
-				- correlatable to real world fiat prices
-			- transaction graph especially troublesome
-				- combinatorial explosion of potential quasi-identifiers to consider for every coin
+- transacting with bitcoin naively often lacks privacy:
+	- wallet clustering
+		- techniques:
+			- address reuse
+			- common input ownership heuristic
+			- change identification heuristic
+		- literature
+			- all heuristics vaguely described by Satoshi
+			- TODO explicated by Ron & Shamir, studied observationally
+				- metadata correlated from public websites
+			- TODO fistful of bitcoins paper, first empirical study
+				- sent btc down a mixer, analyzed results
+			- TODO Jonas Nick's thesis
+				- BIP 37 privacy leak
+					- exponential decay of noise, thought to be anonymizing, through long term collection
+			- TODO empirical confirmation of clustering heuristics, c.f. unreasonable effectiveness of wallet clustering
+	- in general, there is proliferation of leaks that can be modeled as [[quasi-identifier]]s:
+		- coin values
+			- "round" values, i.e. low hamming weight in base 10
+			- excessive precision
+			- fiat exchange rate
+		- wallet fingerprints
+			- nLocktime
+			- nSequence, BIP-125 opt in
+			- input/output order
+			- script types
+			- combinations of script types (e.g. p2wpkh input, p2wpkh output and p2pkh output implies the p2pkh output is the payment, and p2wpkh is a change output)
+		- temporal fingerprints
+			- broadcast time
+			- rebroadcast behavior
+		- network fingerprints
+			- ip addresses, network type
+			- light client behavior
+		- light client specific
+			- electrum server queiries
+				- strong clustering due to batch address requests
+			- poisoned peerdb, eclipse attacks
+				- bitcoin core's addrman is more robust against this
+		- dust attacks
+			- interacts with rebroadcast
+			- interacts with coin selection & address reuse
+	- accounting for the transaction graph creates a combinatorial explosion of additional ones through successor/predecessor relation ("taint")
+		- in simplest case, common input ownership heuristic: a wallet cluster is a quasi identifier
+			- this is not a unique identifier from the technicality arising from there being multiple coins, so therefore it is not unique, but rather because of well known counterexamples, such as the MtGoxAndOthers on walletexplorer[dot]com
+		- more generally, every outpoint is a 1-bit attribute of every other outpoint, with the bit indicating whether the ancestor relation holds
+			- this can be refined by accounting for proximity on the graph and/or relatedness within a transaction, see [[intra-transaction anonymity set]]
+			- which also implies this relation is ternary and includes some real valued weight or somesuch, so to avoid thinking too hard about what quasi identifiers defined in terms of that even means let's just assume some reasonable threshold and stop the generalizing there
+- more broadly and with few exceptions, privacy losses occur at a rate that is expoenential in the amount of leaked data
+	- this applies both to a single target and to multiple ones, since the difficulty of deanonymizing one specific target decreases at an increasing rate with every marginal deanonymization of some other [[user]]
+	- the privacy literature is riddled with examples of deanonymization attacks which demonstrate this tendency
+	- a common failure mode for privacy enhancing systems is analyzing elements of the system in isolation
+	- another common failure mode is incorrectly assuming worst case behavior from the adversary's perspective, instead of the user's, or average case
+- strong fungibility is emergent from privacy
+	- can also be a legal or social construct
+	- but if non-fungibility cannot be enforced then fungibility is self evident
+- privacy and fungibility are a requirement for censorship resistance
+	- non-fungibility in and of itself is a kind of censorship
+		- discriminatory costs may exclude some participants
+	- lack of privacy exposes users to harms
+		- safety
+		- fraud
+		- surveillance
+		- loss of business confidentiality
+	- chilling effects create an unobservable baseline level of self censorships
+- difficulties with consensus level privacy enhancements:
+	- *asymptotically* worse scaling behavior
+	- for confidential transaction like homomorphic values non post quantum homomorphic commitment scheme is not future proof:
+		- quantum adversary can either break privacy or inflate, depending on whether commitment scheme is computationally hiding or binding
+	- additionallly, monero & zcash both had cryptographic soundness related inflation bugs
+	- bitcoin consensus is hard enough to change with soft forks, adoption is slow
+- TODO refactor, grab bag of hazards and concerns
+	- unencrypted p2p network, known to have byzantine and honest-but-curious nodes
+		- bip 324 can help against global passive adversary
+	- transactions leak a lot of metadata
+		- many known structural fingerprints
+		- amounts are inherently leaky
+			- correlatable to real world fiat prices
+		- transaction graph especially troublesome
+			- combinatorial explosion of potential quasi-identifiers to consider for every coin
 	- examples
-		- non-bitcoin
+		- non-bitcoin but instructive
 			- us census [[k-anonymity]]
 			- netflix graph, Naranyan & Shmatikov
 			- browser fingerprinting
@@ -48,21 +101,3 @@
 				- paynyms, xpubs, dojo
 				- address reuse
 			- [[toxic change problem]]
-- strong fungibility is emergent from privacy
-	- can also be a legal or social construct
-	- but if non-fungibility cannot be enforced then fungibility is self evident
-- privacy and fungibility are a requirement for censorship resistance
-	- non-fungibility in and of itself is a kind of censorship
-		- discriminatory costs may exclude some participants
-	- lack of privacy exposes users to harms
-		- safety
-		- fraud
-		- surveillance
-		- loss of business confidentiality
-	- chilling effects create an unobservable baseline level of self censorships
-- difficulties with consensus level privacy enhancements:
-	- *asymptotically* worse scaling behavior
-	- for confidential transaction like homomorphic values non post quantum homomorphic commitment scheme is not future proof:
-		- quantum adversary can either break privacy or inflate, depending on whether commitment scheme is computationally hiding or binding
-	- additionallly, monero & zcash both had cryptographic soundness related inflation bugs
-	- bitcoin consensus is hard enough to change with soft forks, adoption is slow

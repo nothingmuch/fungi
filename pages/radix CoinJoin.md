@@ -1,0 +1,25 @@
+- by utilizing multiple fixed denominations, some of the inherent limitations of [[equal amount CoinJoin]] can be overcome
+- this transaction structure bears superficial resemblence to Wasabi wallet's coinjoin transactions, as that client implementation fails to actually satisfy the requirements underlying the structure's design rationale
+- strawman: powers of 2
+	- since any amount can be decomposed into a sum of powers of two, we can imagine a wallet whose internal address chain only contains such coins
+	- example:
+		- suppose the wallet contains a single coin worth $2^{20}$ sats
+		- a payment of 1000000 sats is made intending to pay 500 sats of fees
+		- this will leave 48076 sats as change, which can be decomposed as $2^2 + 2^3 + 2^6 + 2^7 + 2^8 + 2^9 + 2^{11} + 2^{12} + 2^{13} + 2^{15}$
+		- the first 4 terms must be omitted due to the dust threshold, which results in an additional 202 sats in fees, and 4 self-spend outputs
+		- when new coins are received, they can be split in this way without making a payment
+	- since only powers of 2 are used, employing this strategy in a multiparty increases the likelyhood that the same denomination will be used by multiple users, which can be analyzed equivalently to [[equal amount CoinJoin]]
+- using a single base is not practical due to the fragmentation that arises when subtracting a small value from a significantly larger low Hamming weight value
+- however, standard denominations utilizing different bases are complementary to each other
+	- in particular the combination of:
+		- $\{1, 2, 5\} \cdot 10^k$ (1-2-5 series widely used in currencies, works well with decimal biased amounts)
+		- $2^k$
+		- $\{1, 2\} \cdot 3^k$
+	- is well suited, because:
+		- on the one hand this denomination set is sparse enough that that a high multiplicity of each value in a transaction will often arise
+		- on the other, it is sufficiently dense that most arbitrary values can be decomposed with only 3 to 4 outputs
+		- often subracting one of these values from an arbitrary amount, even when the arbitrary amount has a high Hamming weight in one base, can result in a low Hamming weight value in another base
+			- concretely, every value from the dust threshold to 10 BTC can be decomposed with negligible (on the order of the dust threshold) loss with 5 or fewer values, the vast majority can be decomposed using 4 values, and most values can be decomposed with only 3
+		- finally, the total set size is sufficiently small that a brute force search of *all* possible combinations up to e.g. 6 values can be practically computed on commodity hardware or even a [[mobile device]] with auxilliary storage
+			- this allows uniformly random sampling from a sufficiently set of decomposition solutions deemed acceptable by the [[cost function]], which greatly simplifies modeling of privacy leaks due to the cost function itself
+-

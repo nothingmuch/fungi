@@ -31,7 +31,7 @@
 	- list of outpoints $(I_i)_{i=1}^n$ with nominal values $V_i$.
 	- let $V_{min}$ denote the smallest nominal value
 - pedersen commitments to tweaks $T_i = v_i G_{\mathrm{sats}} + r_i G$
-	- underlying secret values, proposer reveals  the owner of each input:
+	- underlying secret values, proposer reveals the owner of each input:
 		- a blinding factor $r_i \in \mathbb{Z}_p$, sampled randomly
 		- the payoff amount in sats $v_i \in [-2^{l-1}, 2^{l-1})$, where $l$ is the range proof width in bits
 - balance proof

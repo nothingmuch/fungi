@@ -1,0 +1,30 @@
+- deanonymization games
+	- find originating node / channel for payment
+	- wallet cluster of node
+		- private channels
+		- antecessor/successor coins of channels
+			- note that to a deanonymizing adversary, stable node IDs are essentially address reuse
+- (meta)data leaks for a payment
+	- HTLCs are observed with correlated hash & amounts along path
+	- csv deltas constrain path length
+	- if each routing node is considered an observer of the payment event
+	- for sender, the counterparty is a special case because it priviliged information like the payment amount
+	- for receiver, the counterparty knows target node
+		- blinded paths make analysis similar to sender
+- the consistency with our on-chain definitions
+  	- limiting case: all routing nodes along a payment's route enforce on-chain with the HTLC unresolved, and it then resolves on-chain
+	 	- technically the terminal nodes of the route still have plausible deniability about being terminal
+		- assuming the adversary knows the path is complete, in this case the anonymity set for the payment is then trivially a singleton of the sending node
+	- as more of this information is kept off chain, the set of parties to the information is more constrained
+	- the off chain anonymity is therefore arguably less concerned with the structure of transactions and their related anonymity sets, and more concerned with the risk of corruption and limiting the amount of information given to any particular node
+	- note that although in practice the worst case can only happen once per channel, it's only for illustration purposes: in the honest-but-curious model routing nodes do not forget the information given by past payments even if those were settled off chain, and may integrate this information with e.g. an on-chain enforcement observation pertaining to other channels
+		- of course adversary that is able to corrupt multiple nodes will be able to integrate such information even in the absence of any on-chain enforcement
+- privacy aware LN routing
+  	- to account for leaks that may result in the on-chain worst case, the priviliged information given to specific nodes must be recorded and taken into account when performing later payments
+	- the marginal hazard of sending/responding to a protocol message in a certain way might then be accounted for using the recorded information
+	- onion messages may reveal, under assumptions about how nodes route payments, less but not zero information about the origin
+	- mitigations generally try and undermine these assumptions:
+		- sub-optimal routes (costlier than "best" route)
+			- note that longer paths may increase likelyhood of encountering corrupted nodes
+		- ranodmized csv deltas can obscure the distance to the sending node
+		- varying fee amounts can mitigate leaks about the payment amount and fee priority of the payment

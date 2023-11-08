@@ -1,2 +1,3 @@
 - the limiting case for privacy is anonymity, defined in terms of an [[anonymity set]]
--
+- to perform this analysis, we need to take into account blockchain information (i.e. transactions), precursors or related messages, manual labeling information (e.g. the counterparty, or sensitivity of the trasnsaction), and private information such as the set of owned coins
+- this information is then interpreted under one of the two [[threat model]]s, which for each coin (or more accurately, intent to send a message that is expected to result in a transaction) gives rise to an anonymity set

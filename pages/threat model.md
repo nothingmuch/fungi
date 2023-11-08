@@ -1,0 +1,18 @@
+- when defining an [[anonymity set]] we must consider the capabilities of the [[adversary]]
+- in Bitcoin, there are two main categories of surveillance that are possible
+	- publicly available information on the blockchain
+		- generally the transaction graph is the biggest source of leaks
+        - generally what is confirmed on-chain is only a subset of what is observable by the adversary, see [[anonymity set for off chain transactions]]
+	- additional information
+		- priviliged information a counterparty or third party to the transaction might learn
+			- shipping addresses, account IDs, KYC/AML, ...
+			- publicly available information online (c.f. Ron & Shamir, earliest paper on bitcoin privacy)
+			- network level identifiers (e.g. tx localization)
+			- cryptographic identifier relationships (e.g. an xpub or output descriptor allowing addresses to be clustered)
+	- these threat models let us interpret the information from the [[privacy analysis]] and try and estimate the risk of exposure
+	- we can then normalize to a satoshi value so that we can derive a cost function, in a way that is compatible with e.g. lightning routing, or coin selection considerations by internalizing this risk in the form of a liability
+		- if the user is consenting to use a specific privacy wallet with some reasonable estimation of the cost involved in using it up front, this implies the harm to the user from not applying these mitigations is larger
+		- from this we can derive a lower bound on the expected (negative) value of losing privacy
+			- note this might be different for different counterparties or even different transactions to the same counterparty
+		- concretely this means the face value of coins whose privacy metrics are below the threshold is discounted by at least the lower bound, i.e. non-private coins are worth less to the user, and it is the wallet's job to get rid of them, replacing with coins that are private according to the metrics, and minimizing the cost of doing this
+		- the expectation values are also related to beliefs about [[Sybil resistance]], namely the notion of an anonymity set is contingent on the set actually comprising of

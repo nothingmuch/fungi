@@ -1,0 +1,16 @@
+- as observed by gmaxwell in the original coinjoin post, an interconnection network of 4 perfect 2-of-2 mix transactions is equivalent to a single transaction of size 4
+- we can generalize this into an entropic anonymity set for transaction networks using our existing definitions
+  	- the [[equivalent txout/txin anonymity set]] relates a coin to similar ones on the same "side" of either the funding or spending transaction
+	- the [[intra-transaction anonymity set]] relates a coin to potential antecessor coins, which are on the "other side" of the funding or spending transaction
+	- we can successively compose these definitions, taking the equivalent txins/outs of the antecessor coins, etc
+		- note that under [[entropic anonymity]] modeling assumptions these are 3 way relations as they are not uniformly weighted and the weights depend on the point of origin but intuitively it is often useful to think of the special case where the weights are uniform, in which case this enumeration is analogous to merging anonymity sets as in a union/find problem
+	- however, this is mainly of theoretical interest, because in practice favoring low Hamming weight values make the special case common
+		- if the multiplicity for each denomination is >= 2 in both the inputs and outputs
+		- and on average >1 of these on the input side and the output side is spent from or into a transaction with the same conditions
+		- then with overwhelming probability every such standard denomination coin is on the strongly connected component of a graph of equivalent coins spanning multiple transactions
+			- we'll assume there it's "the" strongly connected component, even though we can't ensure >1 condition holds per transaction
+		- the inter-transaction based multiplicity values, which count the multiplicity over the entire connected component, are arguably valid for use in the radix approximation of [[intra-transaction anonymity set]] size
+		- in practice, depth constrained enumeration seems more appropriate, because:
+			- bounds/approximations are more conservative
+			- satisficing is more appropriate maximizing for robustness
+			- light clients should avoid expensive and potentially privacy leaking queries

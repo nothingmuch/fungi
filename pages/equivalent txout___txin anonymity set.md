@@ -1,0 +1,28 @@
+- this is a (familiar) definition of a bitcoin related [[anonymity set]] consisting of a local group of equivalent or related coins, often used to analyze [[equal amount CoinJoin]] transactions
+- a coin, in this context, is:
+	- initially a UTXO, of a confirmed or unconfirmed transaction
+	- the set of all TxIns of its various spending transactions
+	- ... one of which may be confirmed in a block
+	- when available, any PSBT fragments associated with knowledge of the secret key, BIP-322, and all associated metadata related to the transmission of such messages
+		- we will assume the wallet controls for these leaks since in general if as quasi-identifiers they can lead to linkages this will invalidate the modeling assumptions, and we can't reasonably estimate the anonymity set sizes without knowledge of other users' equivalent attributes, which would defeat privacy even in the semi-honest threat model
+			- TODO [[cost function]] monotonicity & incentive compatibility of [[protocol]] under the monotonicity assumption
+- both the txout and the txin sides of a coin may be contained in transactions with other equivalent txouts or txins respectively
+	- *txout equivalence class*:
+		- same value
+		- same script type
+	- *txin equivalence class*:
+		- same value
+		- same script type, same spend path type up to key material
+	- there may be more than a single equivalence class of txins with respect to a single spending transaction, typically the confirmed one
+	- the txin or txout *siblings* of a coin are the coins or txins/txouts that are part of its equivalence class, if a coin is in a singleton equivalence class it sibling sets are empty.
+- *locally equivalent coins of a coin* is the set of coins related to the specific coin's (confirmed) txin and txout equivalence classes
+	- as an anonymity set, this uniform probability distribution, and can therefore be accounted for by the anonymity set size $k$
+	- note that this is not an equivalent class of coins since it is parameterized by an origin coin, which may be spent into a distinct transaction from its txout siblings, and similarly
+	- the set of *redundantly equivalent coins* is an equivalence class, these are coins which are siblings on both the txout and the txin side
+	- under certain assumptions about client behavior we can ignore the unconfirmed txin equivalence classes
+		- but note that in general we cannot, since messages associated with the coin that are not the confirmed transaction, strictly reveal more information than only having broadcast the transaction that was confirmed, so intuitively one should not think of the union of a coin's txin equivalence classes as that is an overly optimistic assumption.
+		- informally, we can state these assumptions as
+			- participation in the protocol is tied to some unforgeable costliness that would impose some cost that is possible to estimate on a sybil adversary
+			- the client will never transmit messages except in a context where honest participants will transmit similar messages, such that ambiguity is maintained
+				- as a concrete example: don't register a payment output in a coinjoin transaction before seeing observing that the txin equivalence classes of the funding coins are all above some size threshold
+			- in reality, this assumption would prohibit a network from bootstrapping or recovering from periods of inactivity, so it must be relaxed, which is why the [[protocol]] is designed around imputations

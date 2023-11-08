@@ -10,11 +10,21 @@
 			- eve-alice-eve / streaming wallet model
 			- anonymity set is quantified by counting counterfactual paths through transaction graph
 	- cost normalization
-		- threat model output includes transaction subgraph
-			- sybil attack cost estimation can be given in terms of
-				- fee cost
-				- liquidity requirements integrated over time
+	  id:: 6505c008-06c3-4c6d-a639-123b75d7334a
+	  collapsed:: true
+		- [[threat model]] interprets the output of the [[privacy analysis]] to allow us to estimate [[anonymity set]] sizes under these different assumptions but this needs to be made comparable to e.g. the objective fee cost
 		- the user's willingness to pay fee overheads (in terms of intuitive budget controls) and the threat model give a lower bound to the perceived harm of attacks on the user's privacy
+			- using the threat model we can derive an worst case probability of deanonymization assuming all users are legitimate
+			- this relates to an expectation of harm, that is necessarily larger than what the user is willing to pay
+			- therefore dividing the probability out of this expected value we can obtain an estimate of the harm of deanonymizing a coin/tx
+			- not clear how to relate this term to benefit to the adversary but they are clearly proportional
+		- sybil attack cost estimation can be given in terms of
+			- fee cost to create the tx graph context
+			- liquidity requirements integrated over time
+		- if the cost to perform a sybil attack is significantly greater than the benefit to the adversary of deanonymizing successfully, then we can assume that the anonymity set is legitimate
+			- in other words, without unforgeable costliness, privacy assurances are very weak
+			- for users earning fees from such transactions, costliness must be imposed via time costs
+			- this is incentive compatible with improved privacy, but only if profitability is limited, otherwise it can subsidize sybil attacks
 		- wallet states that are not sufficiently private according to the threat model impose a liability on their constituent coins, that can be discharged by spending into privacy enhanced transactions
 - additional terms
 	- (scheduled) payment intents can be represented as a time dependent, which exceeds the payment amount past the deadline

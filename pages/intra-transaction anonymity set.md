@@ -1,0 +1,47 @@
+- we need to account for how coins are related to their (apparent) funding coins
+- the [[equivalent txout/txin anonymity set]] definition only cares about what happens on the "edges" of a given transaction, only considering the output or input side at a time
+- the [[sub-transaction model]] provides some useful definitions
+	- sub-transaction mappings are a subset of partitions over the inputs and outputs of transaction
+	- in sub-transaction mappings, for every part in the partition, known as a *sub-transaction*, if the inputs are represented as positive values and outputs are negative, the sum of the values is equal to 0
+		- for a more realistic model, we of course care about when it's close to 0, not exactly equal
+	- non-derived sub-transaction mappings is a refinement of this definition that treats finer grained partitions as more elementary, i.e. a given partitions A and B where one part of A is the union of two parts in B, A can be derived from B by merging the parts, so it is a derived mapping.
+- with no prior, a simple counting approach be used to estimate the probabilities of coins being linkable: two coins are linked based on the degree to which they occur together in sub-transactions as a fraction of all possible sub-transactions in all non-derived sub-transaction mappings
+	- note that this is intractable for larger transactions due to exponential running time
+	- that said, there is sufficient structure to obtain useful analyses even without a general solution
+	- for more theoretical intuition, let G be a group describing an action on non-derived sub-transaction mappings of a given transaction
+		- sets of equivalent inputs or outputs imply the symmetric group appears as a subgroup of G
+			- since any sub-transaction mapping, is equivalent up to permutations of these coins with other valid mappings
+			- these are 1:1 substitutions of coins, and they preserve the sums of all parts as well as the number of parts
+		- a more general action can describe n:1 substitutions of coins that still preserve the number of parts, and the sum condition but not necessarily the exact sums
+		- generalizing further, we might to expand the domain from non-derived sub-transaction mappings to derived ones, or even to partitions
+	- these observations 
+- we can obtain an [[entropic anonymity]] based [[anonymity set]] definition from this data by reframing it from the point of view of a single coin:
+	- the size of the set is at most the number of inputs or outputs (the smallest of the two), and the probability density corresponds to the proportion of partially overlapping sub-transactions
+		- TODO it's not clear how to estimate set differences larger than the minimum 2, although that could theoretically be counted too it:
+			- improves a max constraint on a lower bound which is unlikely to be the limiting constraint
+			- psychologically, it seems to be an overly general metric when considered from the viewpoint of an adversary with multiple targets, for whom the marginal cost of deanonymization attacks decreases exponentially
+	- this anonymity set characterizes for a given txout, what are its possible antecedent txins, therefore it is additive with the [[equivalent txout/txin anonymity set]] definition
+- approximations and lower bounds
+	- we are interested in approximations, in particular lower bounds because of
+		- the computational intractibility
+		- the limiting constraint on the actual anonymity set size per tranasaction is the transaction's size, the number of sub-transaction mappings can only constrain it
+	- [[radix CoinJoin]] special case (lower bound)
+		- when low Hamming weight, standard denominations are used as in Wasabi 2.0, a simple counting approach can be used for estimating a lower bound on the anonymity set size
+			- e.g. for an arbitrary valued output, if a combination of low hamming weight inputs which sums to its value can be constructed then it's a valid sub-transaction, and the minimal multiplicity of the inputs is a (conservative) lower bound on the number of distinct sub-transaction
+	- sampling or bounded combinatorial approach (approximation)
+		- suitable for use in cost function during critical phase of protocol
+		- compute table of combinations of other users' input coins, sorted by sum
+			- maximum weight of standard transactions implies $n$ is on the order of hundreds at most per transaction, but limiting to e.g. pairs also makes for more conservative estimates
+		- for every considered output decomposition (set of txouts the client is considering to add to a multiparty transaction)
+			- take the powerset of this decomposition (note that this is basically O(1))
+			- look up each subset in the in sum table, and count distinct combinations of inputs that sum to the output cluster or slightly above over finite window
+				- these correspond to counterfactual sub-transactions, but not necessarily sub-transaction mappings
+					- this gives constructive lower bound but under assumption of coin independence which is more brittle than the minimum multiplicity
+				    - however, if the complement of a subset A has matches whose coins are disjoint from the matches of A, then that implies a counterfactual sub-transaction mapping, for the same reason that Knapsack mixing as proposed by Maurer et al does
+					- e.g. if adversary deanonymizes a user, they learn an entire cluster of inputs and outputs, this may invalidate estimated bounds of both the number of sub-transaction and sub-transaction mappings
+		- in the cost function this should be sub-additive since satisficing is more appropriate than maximizing
+	- subset sum density (approximation)
+		- the subset sum problem relates to the sub-transaction mapping problem, as the latter requires recursive application of the former
+		- therefore, determining whether the underlying subset sum instance is sparse or dense is informative even without solving the problem
+		- in the literature, there's interesting pseudopolynomial time algorithms for approximating (dense) subset sum
+			- in particular, [one approach](https://arxiv.org/pdf/1807.11597.pdf) using generating functions might be applicable for a more offline, whole graph analysis especially taking a differential point of view (estimating contribution of each coin individually)

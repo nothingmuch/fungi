@@ -21,7 +21,7 @@
 		- all participants must be assured that all of their operations are accepted
 	- denial service mitigation through authenticated messages
 		- only accepting messages (additions of inputs or outputs to transaction under construction) that are provably honest enforces that there is no legitimate reason to refuse to sign
-			- note here that honesty is in the sense of no misappropriated funds, i.e. the users' intended use of their funds  of funds, (with regards to fund allocation, in the stronger incentive alignment sense, universe patches welcome ;-) enforces that no one has a legitimate reason to refuse a signature
+			- note here that honesty is in the sense of no misappropriated funds, i.e. the users' intended use of their funds of funds, (with regards to fund allocation, in the stronger incentive alignment sense, universe patches welcome ;-) enforces that no one has a legitimate reason to refuse a signature
 		- if the above all holds, then participants have no valid reason not to sign
 		- therefore, failure to sign implies disruption (whether due to malice or connectivity issues)
 		- message validity
@@ -30,7 +30,6 @@
 			- join/split operations are possible, batch operations have a balance proof & range proofs
 			- analogous to confidential transactions, but instead of a tx graph and consensus state, the issuer/validator provides an unforgeable authenticator (analogous to blind signature or MAC) with the homomorphic commitment as a message
 - phases
-  collapsed:: true
 	- advertisement aggregation
 		- RBF
 	- transaction construction session

@@ -1,0 +1,16 @@
+- in the [[eve-alice-eve]] or [[streaming wallet]] threat model, Alice (the target) both receives and sends money through Eve, the adversary, but may perform additional transactions in between (e.g. mixing transactions)
+	- concretely Eve might be an AML/KYC exchange, c.f. Celsius lawsuit disclosures
+	- only a relatively small number of payments is required for Eve to be able to conclude a payment was made by Alice or not, even with non negligible [[equivalent txout/txin anonymity set]]
+		- this is Eve knows which coins she sent to Alice, so upon seeing mixed coins which in all cases have these coins in their history
+		- the chances of one of Eve's coins being in the history of a random coin is the baseline level she would expect
+		- note that this side channel is amplified by clustering/change management
+- the objects of this kind of anonymity set are therefore plausible but counterfactual paths that Alice can observe between her own coins
+    - this is related to the [[inter-transaction anonymity set]] because the enumeration is the same
+    - from Eve's perspective, these paths already provide apparent but untrue links to Eve's coins which were originally sent to Alice
+- example:
+	- Alice coinjoins her coin $A_0$ with Bob's $B_0$ & Carol's $C_0$ coins, and obtains its decedendent $A_1$, with coin like anonymity set size of 3.
+	- Alice waits a while
+	- Alice coinjoins her coin $A_1$, resulting in $A_2$, with another coin $D_1$ that is an apparent possible descendent of both $B_0$ or $C_0$
+		- this is due to at least one, possibly more transactions between $B_0$ and $D_1$ and between $C_0$ and $D_1$.
+		- to a public observer, any payment made using $A_2$ could have been originally funded by $B_0$ or $C_0$, which are both plausible but counterfactual points of origin since they are interchangeable with the real one $A_0$.
+		- this means $A_2$ has a path like anonymity set size of 3, because both $B_0$ and $C_0$ would contribute the same statistical fingerprint as having made the payment by $A_0$

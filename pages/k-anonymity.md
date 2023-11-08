@@ -1,15 +1,15 @@
 - [Protecting Privacy when Disclosing Information: k-Anonymity and Its Enforcement through Generalization and Suppression](https://dataprivacylab.org/dataprivacy/projects/kanonymity/paper3.pdf) by Pierangela Samarati and Latanya Sweeney
-- describes a procedure for suppressing/generalizing [[quasi-identifier]]s in a tabular data release so that even when they are combined there are never fewer than $k$ rows for any particular combination
+- the paper describes a procedure for suppressing/generalizing [[quasi-identifier]]s in a tabular data release so that even when they are combined there are never fewer than $k$ rows for any particular combination
+	- note that referring to this result here, i am only invoking the paper's notion of anonymity set, quasi identifiers, and the notion of a "data release" although the latter is augmented to be thought of as a sequence of append only data releases
+		- the de-identification procedure which relies on generalization and suppression of certain fields is not applicable and furthermore has some theoretical issues, but "k-anonymity" more widely refers to this technique, not to only the resulting notion of anonymity set
 - also describes the alarming previous results of deanonymizing a significant fraction of the US census database using such combinations matched against voter registries
 - in Bitcoin
-	- we can think of a series of "releases" that append to the previous ones
-	- unique cryptographic identifiers, used correctly, are not reused and are indistinguishable from random
-	- p2p metadata, such as IP addresses
-	- temporal fingerprints
-	- known transaction fingerprints are quasi identifiers
-	- the transaction graph creates a combinatorial explosion of additional ones through successor/predecessor relation ("taint")
-		- simplest case, common input ownership heuristic: a wallet cluster is a quasi identifier
-			- this is not a technicality arising from there being multiple coins, so therefore it is not unique, but rather because of well known counterexamples, such as the MtGoxAndOthers on walletexplorer[dot]com
+	- we can think of the blockchain or a sequence of transactions broadcasted by a specific node or wallet a series of "data releases" that append to the previous ones
+		- each transaction, or any other kind of network [[message]] appends to the "table"
+	- unique cryptographic identifiers, if not reused are indistinguishable from random
+		- although they are unique identifiers, on their own they they are pseudonymous
+	- in addition there are plenty of inherent [[quasi-identifier]]s arising from both the transaction graph and the p2p protocol, see [[problem statement]]
+	- as well as blockchain external information such as personally identifying information (i.e. unique identifiers) which arise from interactions with counterparties or third parties, primarily due to compliance reasons (e.g. KYC/AML)
 	- we also care about blockchain external (meta)data, such as personally identifying information given for compliance reasons
 	- simplest example of k-anonymous outputs:
 		- outputs of a coinjoin with identical amounts and script types
